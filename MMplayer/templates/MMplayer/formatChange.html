@@ -1,0 +1,165 @@
+
+{% extends 'MMplayer/base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{#导航条#}
+{% block navitem %}
+        <li ><a href ={% url 'index' %}>我的音乐</a></li>
+        <li class="active"><a href="{% url 'formatChange' %}">格式转换</a></li>
+{% endblock %}
+
+{% block main %}
+{##########################图片格式转换#################################}
+   <div class="col-md-4">
+
+    <h2>图片格式转换</h2>
+
+    <div class="selectLocalFile">
+    <form id="inputImgForm" method = "post"  enctype="multipart/form-data" action="{% url 'inputMedia' %}">
+    {% csrf_token %}
+   <div class="form-group" >
+    <label for="InputFile">选择本地图片文件</label>
+        <input type="file" id="InputFile" name="media">
+
+   </div>
+    </form>
+
+<button class="btn btn-primary" onclick="input_img_to_transform()">
+    jpg
+    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+    png
+</button>
+
+<button class="btn btn-primary" onclick="input_img_to_transform()">
+    jpg
+    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+    png
+</button>
+
+{#<button type="button" class="btn btn-primary" onclick="input_img_to_transform()">确定选择</button>#}
+<a class="btn btn-info" id="downloadTransImg" href="#" style="display: none">点击下载</a>
+
+    </div>
+   </div>
+{##########################video2audio################################}
+   <div class="col-md-4">
+
+   <h2>视频转音频</h2>
+  <div class="selectLocalFile">
+    <form id="inputVideoForm" method = "post" enctype="multipart/form-data" action="{% url 'inputVideoToAudio' %}">
+    {% csrf_token %}
+   <div class="form-group" >
+    <label for="InputFile">选择本地视频文件</label>
+        <input type="file" id="InputFile" name="media">
+    </div>
+    </form>
+
+    <button type="button" class="btn btn-primary" onclick="input_video_to_audio()">确定选择</button>
+
+    <a id="downloadTransAudio" href="#" style="display: none">点击下载</a>
+
+    </div>
+
+   </div>
+
+{##########################image resize###############################}
+<div class="col-md-4">
+   <h2>图片大小修改</h2>
+  <div class="selectLocalFile">
+    <form id="inputImgToResizeForm" method = "post" enctype="multipart/form-data" action="{% url 'inputImgToResize' %}">
+    {% csrf_token %}
+   <div class="form-group" >
+       <ul>
+           <li>
+        <label for="InputFile">选择本地图片文件</label>
+        <input type="file" id="InputFile" name="media">
+           </li>
+           <br>
+           <li>
+       <label for="inputWidth">宽</label>
+        <input id="InputWidth" name="width">
+           </li>
+           <li>
+        <label for="inputHeight">高</label>
+        <input id="InputHeight" name="height">
+           </li>
+       </ul>
+
+   </div>
+    </form>
+
+    <button type="button" class="btn btn-primary" onclick="input_img_to_resize()">确定选择</button>
+    <a id="downloadResizeImg" href="#" style="display: none">点击下载</a>
+{###############################################################}
+{#上传媒体文件#}
+        <script>
+// png,jpg互相转换
+function input_img_to_transform(){
+ alert("ok!");
+ inputImgForm = document.getElementById("inputImgForm");
+ var formData = new FormData(inputImgForm);
+ $.ajax({
+   url:"{% url 'inputImgToTransform' %}",
+  type:"POST",
+  data:formData,
+  processData: false,
+  contentType:false,
+  success:function(backData){
+    alert("ok!");
+   console.log(backData);
+    download_img=document.getElementById("downloadTransImg");
+    download_img.href='downLoadFile/'+backData.directoryRoute+'/'+'1';
+    download_img.style.display="block"
+  }
+ })
+}
+
+//视频转音频
+{#上传媒体文件#}
+function input_video_to_audio(){
+ alert("ok!");
+ inputVideoForm = document.getElementById("inputVideoForm");
+ var formData = new FormData(inputVideoForm);
+ $.ajax({
+   url:"{% url 'inputVideoToAudio' %}",
+  type:"POST",
+  data:formData,
+  processData: false,
+  contentType:false,
+  success:function(backData){
+    alert("ok!");
+   console.log(backData);
+    download_audio=document.getElementById("downloadTransAudio");
+    download_audio.href='downLoadFile/'+backData.directoryRoute+'/'+'2';
+    download_audio.style.display="block"
+  }
+ })
+}
+// 图片大小改变
+function input_img_to_resize(){
+ alert("ok!");
+ inputImgToResizeForm = document.getElementById("inputImgToResizeForm");
+ var formData = new FormData(inputImgToResizeForm);
+ $.ajax({
+   url:"{% url 'inputImgToResize' %}",
+  type:"POST",
+  data:formData,
+  processData: false,
+  contentType:false,
+  success:function(backData){
+    alert("ok!");
+   console.log(backData);
+    download_resize_img=document.getElementById("downloadResizeImg");
+    download_resize_img.href='downLoadFile/'+backData.directoryRoute+'/'+'3';
+    download_resize_img.style.display="block"
+  }
+ })
+}
+        </script>
+    </div>
+
+</div>
+{% endblock %}
+

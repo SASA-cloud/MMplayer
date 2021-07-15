@@ -1,96 +1,233 @@
-<html lang="zh-CN">
- <head>
-     <meta charset="utf-8">
-     {% load bootstrap3 %}
-     {% bootstrap_css %}
-     {% bootstrap_javascript %}
-     <title>MMplayer</title>
- </head>
-<body>
-   <nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">MMplayer</a>
+{% extends 'MMplayer/base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{#导航条#}
+{% block navitem %}
+        <li class="active"><a href ={% url 'index' %}>我的音乐<span class="sr-only">(current)</span></a></li>
+        <li><a href="{% url 'formatChange' %}">格式转换</a></li>
+{% endblock %}
+
+
+{#主页面#}
+{% block main %}
+{#####################媒体播放列表##################}
+   <div class="col-md-3">
+{##########################上传文件##########################}
+    <h2> 媒体播放</h2>
+{#    <div class="selectLocalFile">#}
+{#    <form id="inputMedia" method = "post"  enctype="multipart/form-data" action="{% url 'inputMedia' %}">#}
+{#    {% csrf_token %}#}
+{#   <div class="form-group" >#}
+{#    <label for="InputFile">选择本地媒体文件</label>#}
+{#        <input type="file" id="InputFile" name="media">#}
+{#   </div>#}
+{#    </form>#}
+{#    <button type="button" class="btn btn-primary" onclick="inputMedia()">确定选择</button>#}
+{#    </div>#}
+{##########################上传文件##########################}
+
+
+   <div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a id="findTab" href="#servermusic" aria-controls="home" role="tab" data-toggle="tab">发现</a></li>
+    <li role="presentation"><a id="ilikeTab" href="#ilike" aria-controls="profile" role="tab" data-toggle="tab">我喜欢</a></li>
+    <li role="presentation"><a id="streamMediaTab" href="#streamMedia" aria-controls="messages" role="tab" data-toggle="tab">流媒体</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+{#发现#}
+    <div role="tabpanel" class="tab-pane active" id="servermusic">
+        <div id="mediaBox1" class="list-group pre-scrollable" style="max-height: 600px">
+            {% for item in mediaList %}
+              <a href="#" class="mediaItem list-group-item" onclick="changeMedia(this)" >{{item}}</a>
+            {% endfor %}
+{#          <a href="#" class="mediaItem list-group-item" onclick="changeMedia()" data-url="{% static '霍尊-卷珠帘.flv'%}">霍尊-卷珠帘.flv</a>#}
+{#          <a href="#" class="mediaItem list-group-item" onclick="changeMedia()" data-url="{% static '霍尊-卷珠帘.mov'%}">霍尊-卷珠帘.mov</a>#}
+{#          <a href="#" class="mediaItem list-group-item" onclick="changeMedia()" data-url="{% static '霍尊-卷珠帘.swf'%}">霍尊-卷珠帘.swf</a>#}
+{#          <a href="#" class="mediaItem list-group-item" onclick="changeMedia()" data-url="{% static '霍尊-山居秋暝-经典咏流传第五期.asf'%}">霍尊-山居秋暝-经典咏流传第五期.asf</a>#}
+{#          <a href="#" class="mediaItem list-group-item" onclick="changeMedia()" data-url="C:\学习\大三下\多媒体应用技术\多媒体pg\网站代码\MMplayer\static\media\video\海底Live(凤凰传奇玲花曾毅).mp4">测试</a>#}
+        </div>
+    </div>
+{#我喜欢#}
+    <div role="tabpanel" class="tab-pane" id="ilike">
+        <div id="mediaBox" class="list-group pre-scrollable" style="max-height: 600px">
+          <a href="#" class="mediaItem list-group-item" onclick="changeMedia(this)" data-url="{% static 'media/playList.wpl'%}">我喜欢的歌曲列表</a>
+        </div>
+    </div>
+{#流媒体#}
+    <div role="tabpanel" class="tab-pane" id="streamMedia">
+        <div id="mediaBox" class="list-group pre-scrollable" style="max-height: 600px">
+          <a href="#" class="mediaItem list-group-item " onclick="changeMedia(this)" data-vlc = "1" data-url="{% static 'media/broadcast.asx'%}">广播电台</a>
+          <a href="#" class="mediaItem list-group-item " onclick="changeMedia(this)" data-vlc = "1" data-url="{% static 'media/tvshow.asx'%}">电视节目</a>
+        </div>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">发现音乐 <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">我的音乐</a></li>
-        <li><a href="#">格式转换</a></li>
-        <li><a href="#">听歌识曲</a></li>
+  </div>
 
-      </ul>
-      <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
+</div>
+   </div>
 
-      <ul class="nav navbar-nav navbar-right ">
-        <li><a href="#">登录</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+{#############################播放器######################################}
+   <div class="col-md-9">
+<!-- mwp播放器-->
+ <div class="mmplayer" style="display: block">
+   <h2>MMplayer</h2>
 
-</nav>
- <div>
-     <p>这是一个多媒体播放器</p>
+    <OBJECT id="mPlayer"  classid=CLSID:6BF52A52-394A-11D3-B153-00C04F79FAA6 width=840 height=500 type='application/x-oleobject"'>
+    <PARAM id="mediaUrl" NAME="URL" VALUE="/MMplayer/static/media/audio/GreateLullaby.mp3">
+    <PARAM NAME="rate" VALUE="1">
+    <PARAM NAME="balance" VALUE="0">
+    <PARAM NAME="currentPosition" VALUE="-1">
+    <PARAM NAME="defaultFrame" VALUE="">
+    <PARAM NAME="playCount" VALUE="100">
+    <PARAM NAME="autoStart" VALUE="0">
+    <PARAM NAME="currentMarker" VALUE="0">
+    <PARAM NAME="invokeURLs" VALUE="-1">
+    <PARAM NAME="baseURL" VALUE="">
+    <PARAM NAME="volume" VALUE="100">
+    <PARAM NAME="uiMode" VALUE="full">
+    <PARAM NAME="stretchToFit" VALUE="0">
+    <PARAM NAME="windowlessVideo" VALUE="0">
+    <PARAM NAME="enabled" VALUE="-1">
+    <PARAM NAME="enableContextMenu" VALUE="0">
+    <PARAM NAME="fullScreen" VALUE="0">
+    </OBJECT>
  </div>
 
-{#播放条#}
-<div class = "m-player-bar">
-    <nav class="navbar navbar-inverse navbar-fixed-bottom">
-         <div class="container" >
-
-            <div style = "float:left">
-                    <button type="button" class="btn btn-default navbar-btn">
-              <span aria-label="previous song" class="glyphicon glyphicon-backward" aria-hidden="true"> </span>
-          </button>
-          <button type="button" class="btn btn-default navbar-btn">
-              <span aria-label="previous song" class="glyphicon glyphicon-play" aria-hidden="true"> </span>
-          </button>
-          <button type="button" class="btn btn-default navbar-btn">
-              <span aria-label="previous song" class="glyphicon glyphicon-forward" aria-hidden="true"> </span>
-          </button>
-
-            </div>
-
-        <div style = "float:left; width:80%" style="padding:0px">
-             <div class="progress" style="margin:12px 10px 0px 10px">
-          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
-            <span class="sr-only">45% Complete</span>
-          </div>
-          </div>
-            </div>
-
-              <div style = "float:left">
-        <button type="button" class="btn btn-default navbar-btn">
-          <span aria-label="previous song" class="glyphicon glyphicon-heart" aria-hidden="true"> </span>
-        </button>
-    </div>
-         </div>
-</nav>
+{#vlc 插件#}
+<div class="vlcplayer" style="display: none">
+    <h2>VLCplayer</h2>
+<object type='application/x-vlc-plugin' id='vlcPlayer' events='True' width=840 height=500
+        pluginspage="http://www.videolan.org" codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.2.2/npapi-vlc-2.2.2.tar.xz">
+    <param name='mrl' value="{% static 'media/broadcast.asx'%}">
+    <param name='autoplay' value='false'>
+    <param name='fullscreen' value='true'>
+    <param name="toolbar" value="true">
+</object>
+{#下一首、上一首按钮#}
+<div class="row">
+<div class="col-md-3" style = "float:left">
+  <button id="prevMediaButton" type="button" class="btn btn-default navbar-btn">
+      <span aria-label="previous song" class="glyphicon glyphicon-step-backward" aria-hidden="true"> 上一首 </span>
+  </button>
+  <button id="nextMediaButton" type="button" class="btn btn-default navbar-btn">
+      <span aria-label="previous song" class="glyphicon glyphicon-step-forward" aria-hidden="true"> 下一首 </span>
+  </button>
+</div>
+</div>
 </div>
 
- </body>
-</html>
+</div>
+
+
+<script>
+
+{###########################上传媒体文件######################################}
+function inputMedia(){
+    alert("ok!");
+     inputMediaForm = document.getElementById("inputMedia");
+     var formData = new FormData(inputMediaForm);
+     $.ajax({
+       url:"{% url 'inputMedia' %}",
+      type:"POST",
+      data:formData,
+      processData: false,
+      contentType:false,
+      success:function(backData){
+        alert("上传成功!");
+        {#mediaBox1=document.getElementById("mediaBox1"); // 取得mediaBox1#}
+        {#document.createElement('')#}
+        {#newMedia=$(`<a href="#" class="mediaItem list-group-item" onclick="changeMedia()" ></a>`);#}
+        {#newMedia.setAttribute("data-url",backData.mediaRoute);#}
+        {#newMedia.innerText=backData.mediaName;#}
+        {#mediaBox1.appendChild(newMedia);#}
+      }
+     })
+    }
+{###########################上传媒体文件######################################}
+
+{###############################媒体播放#####################################}
+
+{#找到按钮对应的歌曲并播放#}
+{#    function changeMedia(event){#}
+{#        mediaItem = document.getElementsByClassName("mediaItem list-group-item active");#}
+{#        if(mediaItem[0]){#}
+{#            mediaItem[0].classList.remove("active");#}
+{#        }#}
+{#        event = event ? event : window.event;#}
+{#        var obj = event.srcElement ? event.srcElement : event.target;#}
+{#	    obj.classList.add("active");#}
+{#	    playMedia(obj);#}
+{#    } #}
+
+function changeMedia(obj){
+    // 存在data-url属性就直接用这个url作为媒体地址
+    if(obj.getAttribute("data-url")){
+        playMedia(obj,obj.getAttribute("data-url"));
+    }
+    // 不存再data-url属性
+    else{
+     $.ajax({
+       url:"{% url 'playMedia' %}",
+      type:"POST",
+      data:{
+           "mediaName":$(obj).text()
+      },
+      success:function(backData){
+            playMedia(obj,backData.mediaUrl);
+      }
+     });
+    }
+    }
+
+{#播放给定url的媒体#}
+     function playMedia(obj,mediaUrl){
+         var mediaPlayer;
+         if(obj.getAttribute("data-vlc")==="1"){
+             {#vlc播放器#}
+             mediaPlayer = document.getElementById("vlcPlayer"); // 取得vlc播放器
+             mediaPlayer.playlist.items.remove(0); // 删除当前播放媒体
+             var itemId= mediaPlayer.playlist.add(mediaUrl); // 添加新播放媒体
+             mediaPlayer.playlist.playItem(0); // 播放新媒体
+         }
+         else{
+             {#wmp播放器#}
+             mediaPlayer = document.getElementById("mPlayer");
+             mediaPlayer.URL = mediaUrl; // 切换曲目url
+             mediaPlayer.controls.play();
+         }
+    }
+
+{#两种播放器的隐藏与显示#}
+$("#streamMediaTab").click(function(){$(".vlcplayer").hide().show();$(".mmplayer").hide();})
+$("#findTab").click(function(){$(".vlcplayer").hide(); $(".mmplayer").show();})
+$("#ilikeTab").click(function(){$(".vlcplayer").hide(); $(".mmplayer").show();})
+
+{#播放按钮切换###}
+{#$("#playbutton").click(function(){$("#playbutton").hide();$("#stopbutton").show();})#}
+{#$("#stopbutton").click(function(){$("#playbutton").show();$("#stopbutton").hide();})#}
+
+{#曲目切换#}
+$("#prevMediaButton").click(function(){
+    let mediaPlayer = document.getElementById("vlcPlayer");
+    mediaPlayer.playlist.prev(); //上一首
+})
+$("#nextMediaButton").click(function(){
+    let mediaPlayer = document.getElementById("vlcPlayer");
+    mediaPlayer.playlist.next(); //下一首
+})
+
+
+{#//  "playList.wpl": "/MMplayer/static/media/playList.wpl",#}
+{#//  "broadcast.asx": "/MMplayer/static/media/broadcast.asx",#}
+{#//  "tvshow.asx": "/MMplayer/static/media/tvshow.asx"#}
+
+
+</script>
+
+{% endblock %}

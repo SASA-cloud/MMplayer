@@ -1,0 +1,9 @@
+<ASX version="3.0">
+    <TITLE>MMplayer</TITLE>
+    <ENTRY>
+        <REF HREF = "audio/GreateLullaby.mp3" />
+    </ENTRY>
+    <ENTRY>
+        <REF HREF = "audio/meAndMyCountry.mid" />
+    </ENTRY>
+</ASX>

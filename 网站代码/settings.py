@@ -117,13 +117,15 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR,"MMplayer/static")
-# ]
+
+STATIC_URL = 'MMplayer/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR,'MMplayer/static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,"MMplayer/static"),
+    # ("css",os.path.join(STATIC_ROOT,'css')),
+    # ("js",os.path.join(STATIC_ROOT,'js'))
+]
 
 
 # Default primary key field type

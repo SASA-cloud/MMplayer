@@ -1,0 +1,14 @@
+<ASX version="3.0">
+    <TITLE>MMplayer</TITLE>
+    <ENTRY>
+        <REF HREF = "audio/GreateLullaby.mp3" />
+    </ENTRY>
+     <ENTRY>
+        <TITLE>东方卫视</TITLE>
+        <REF HREF = "rtmp://58.200.131.2:1935/livetv/dftv" />
+    </ENTRY>
+    <ENTRY>
+        <TITLE>湖南卫视</TITLE>
+        <REF HREF = "rtmp://58.200.131.2:1935/livetv/hunantv" />
+    </ENTRY>
+</ASX>
